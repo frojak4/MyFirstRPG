@@ -2,12 +2,17 @@
 {
     internal class Program
     {
-        static Speler player = new Speler("Frode", 5, 100, 0, 15, 2);
-        static Fiende goblin;
+        static Speler player = new Speler("Frode", 5, 100, 100, 0, 15, 2);
+        static Fiende enemy;
         static void Main(string[] args)
         {
             startScreen();
-            enemyEncounterGoblin();
+            event1();
+            enemyEncounter();
+            enemyEncounter();
+            enemyEncounter();
+            enemyEncounter();
+            enemyEncounter();
         }
 
         static void startScreen()
@@ -18,19 +23,35 @@
         }
 
 
-        static void enemyEncounterGoblin()
+        static void enemyEncounter()
         {
-            goblin = new Fiende("Goblin", 3, 10, 50, 40);
+            Random random = new Random();
+            int fiendeValg = random.Next(1, 4);
+            if (fiendeValg == 1)
+            {
+                enemy = new Fiende("Goblin", 3, 10, 50, 40);
+            }
+            else if (fiendeValg == 2)
+            {
+                enemy = new Fiende("Alkoholiker", 7, 20, 120, 80);
+            }
+            else if (fiendeValg == 3)
+            {
+                enemy = new Fiende("Svenske", 5, 15, 80, 60);
+            }
+
+
+
             Console.Clear();
-            Console.WriteLine($"Du møtte på ein {goblin.Name} i level {goblin.Level}.");
+            Console.WriteLine($"Du møtte på ein {enemy.Name} i level {enemy.Level}.");
             Console.WriteLine("(Trykk på valgfri knapp for å gå videre)");
             Console.ReadKey();
-            while (goblin.HP > 0)
+            while (enemy.HP > 0)
             {
                 Console.Clear();
-                Console.WriteLine($"{player.Name}       vs       {goblin.Name}");
-                Console.WriteLine($"HP: {player.HP}              HP: {goblin.HP}");
-                Console.WriteLine($"Level: {player.Level}             Level: {goblin.Level}");
+                Console.WriteLine($"{player.Name}       vs       {enemy.Name}");
+                Console.WriteLine($"HP: {player.HP}              HP: {enemy.HP}");
+                Console.WriteLine($"Level: {player.Level}             Level: {enemy.Level}");
                 Console.WriteLine();
                 Console.WriteLine("------------------------------");
                 Console.WriteLine();
@@ -45,12 +66,12 @@
 
                 if (userInput == "1")
                 {
-                    goblin.HP -= player.Damage;
+                    enemy.HP -= player.Damage;
                     Console.Clear();
-                    Console.WriteLine($"{player.Name} angrep {goblin.Name} og gjorde {player.Damage} skade!");
+                    Console.WriteLine($"{player.Name} angrep {enemy.Name} og gjorde {player.Damage} skade!");
                     Console.WriteLine("(Trykk på valgfri knapp for å gå videre)");
                     Console.ReadKey();
-                    if (goblin.HP > 0)
+                    if (enemy.HP > 0)
                     {
                         enemyAttack();
                     }
@@ -71,14 +92,19 @@
                     playerStats();
                 }
                
-            }
+            } 
+            Console.Clear();
+            Console.WriteLine($"Du beseiret {enemy.Name} og fikk {enemy.XPDrop} XP");
+            checkForLevelUp();
+
+
         }
 
         static void enemyAttack()
         {
             Console.Clear();
-            player.HP -= goblin.Damage;
-            Console.WriteLine($"{goblin.Name} angrep {player.Name} og gjorde {goblin.Damage} skade!");
+            player.HP -= enemy.Damage;
+            Console.WriteLine($"{enemy.Name} angrep {player.Name} og gjorde {enemy.Damage} skade!");
             Console.WriteLine("(Trykk på valgfri knapp for å gå videre)");
             Console.ReadKey();
         }
@@ -87,9 +113,9 @@
         {
             player.HP += 40;
             player.Potions --;
-            if (player.HP > 100)
+            if (player.HP > player.MaxHP)
             {
-                player.HP = 100;
+                player.HP = player.MaxHP;
             }
             Console.Clear();
             Console.WriteLine($"{player.Name} tok ein overraskende stor slurk av Jaegermeister flaska si, og føler seg litt bedre. han har no {player.HP} HP. ");
@@ -108,6 +134,35 @@
             Console.WriteLine($"XP til neste level: {100 - player.XP}");
             Console.WriteLine("(Trykk på valgfri knapp for å gå videre)");
             Console.ReadKey();
+        }
+
+        static void checkForLevelUp()
+        {
+            player.XP += enemy.XPDrop;
+
+            if (player.XP >= 100)
+            {
+                player.XP -= 100;
+                player.Level += 1;
+                player.Damage += 3;
+                player.HP += 20;
+                Console.Clear();
+                Console.WriteLine($"Du levlet opp til level {player.Level}");
+                Console.WriteLine("(Trykk på valgfri knapp for å gå videre)");
+                Console.ReadKey();
+            }
+        }
+
+        static void event1()
+        {
+            string userInput = "";
+            while (userInput is not "1" and not "2") {
+                Console.Clear();
+                Console.WriteLine("Du kom til ein tornebusk. Kva gjer du?");
+                Console.WriteLine("1. Putt hånda di inni for å sjå om nokon har gjemt Jaegermeister der");
+                Console.WriteLine("2. Gå vidare som ein tapar");
+                userInput = Console.ReadLine();
+            }
         }
     }
 }
