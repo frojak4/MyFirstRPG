@@ -49,7 +49,7 @@
         static void enemyEncounter()
         {
             
-            int fiendeValg = random.Next(1, 4);
+            int fiendeValg = random.Next(1, 7);
             bool runState = false;
             if (fiendeValg == 1)
             {
@@ -62,6 +62,18 @@
             else if (fiendeValg == 3)
             {
                 enemy = new Fiende("Svenske", 5, 15, 80, 60);
+            }
+            else if (fiendeValg == 4)
+            {
+                enemy = new Fiende("Vampyr", 12, 40, 200, 100);
+            }
+            else if (fiendeValg == 5)
+            {
+                enemy = new Fiende("Sommerfugl", 2, 5, 30, 10);
+            }
+            else if (fiendeValg == 6)
+            {
+                enemy = new Fiende("Kjempe", 8, 10, 300, 70);
             }
 
 
@@ -147,6 +159,7 @@
             {
                 Console.Clear();
                 Console.WriteLine($"Du beseiret {enemy.Name} og fikk {enemy.XPDrop} XP");
+                player.XP += enemy.XPDrop;
                 checkForLevelUp();
             }
 
@@ -194,14 +207,13 @@
 
         static void checkForLevelUp()
         {
-            player.XP += enemy.XPDrop;
 
             if (player.XP >= 100)
             {
                 player.XP -= 100;
                 player.Level += 1;
                 player.Damage += 5;
-                player.HP += 20;
+                player.MaxHP += 20;
                 Console.Clear();
                 Console.WriteLine($"Du levlet opp til level {player.Level}");
                 Console.WriteLine("(Trykk på valgfri knapp for å gå videre)");
