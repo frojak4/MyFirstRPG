@@ -13,8 +13,8 @@
         static void startScreen()
         {
             Console.WriteLine("Hei, og velkommen til RPG. Skriv ditt navn nedenfor for å fortsette!");
-            string playerName = Console.ReadLine();
-            player.Name = playerName;
+            player.Name = Console.ReadLine();
+            
         }
 
 
