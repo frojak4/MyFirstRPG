@@ -107,6 +107,7 @@
             Console.WriteLine($"{enemy.Name} angrep {player.Name} og gjorde {enemy.Damage} skade!");
             Console.WriteLine("(Trykk på valgfri knapp for å gå videre)");
             Console.ReadKey();
+            checkForDeath();
         }
 
         static void playerHeal()
@@ -153,6 +154,18 @@
             }
         }
 
+        static void checkForDeath()
+        {
+            if (player.HP <= 0)
+            {
+                Console.Clear();
+                Console.WriteLine($"{player.Name} kollapset ned på bakken og døde. Han blei berre level {player.Level}. Skammelig");
+                Console.WriteLine("(Trykk på valgfri knapp for å avslutte spelet.)");
+                Console.ReadKey();
+                System.Environment.Exit(0);
+            }
+        }
+
         static void event1()
         {
             string userInput = "";
@@ -162,6 +175,23 @@
                 Console.WriteLine("1. Putt hånda di inni for å sjå om nokon har gjemt Jaegermeister der");
                 Console.WriteLine("2. Gå vidare som ein tapar");
                 userInput = Console.ReadLine();
+            }
+
+            if (userInput == "1")
+            {
+                Console.Clear();
+                Console.WriteLine("Trudde du virkelig det skulle ligge Jaeger i ei random busk!? Du stakk deg på buska og mista 30HP");
+                Console.WriteLine("(Trykk på valgfri knapp for å gå videre)");
+                Console.ReadKey();
+                player.HP -= 30;
+                checkForDeath();
+            }
+            else if (userInput == "2")
+            {
+                Console.Clear();
+                Console.WriteLine("Du gikk forbi buska, men er no frustrert for at du aldri får vite kva som er inni");
+                Console.WriteLine("(Trykk på valgfri knapp for å gå videre)");
+                Console.ReadKey();
             }
         }
     }
